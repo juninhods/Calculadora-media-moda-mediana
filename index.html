@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo Estatístico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background: linear-gradient(to bottom, #87CEFA, #ffffff);
+            padding: 0;
+            box-sizing: border-box;
+        }
+        h2 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 80%;
+            max-width: 200px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 80%;
+            background-color: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        p {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .explicacao {
+            margin-top: 20px;
+            font-size: 16px;
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .formula {
+            background-color: #eef;
+            padding: 10px;
+            border-left: 5px solid #007bff;
+            font-family: monospace;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            h2 {
+                font-size: 1.3em;
+            }
+
+            button {
+                width: 90%;
+                font-size: 14px;
+            }
+
+            table {
+                width: 90%;
+            }
+
+            .explicacao {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 1.1em;
+            }
+
+            button {
+                font-size: 12px;
+            }
+
+            .explicacao {
+                font-size: 12px;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>Calculadora de Média, Moda e Mediana - Estudar Para Prova De Ronaldo</h2>
+    <button onclick="adicionarNumero()">Adicionar Número</button>
+    <button onclick="calcular()">Calcular</button>
+    <button onclick="limparDados()">Limpar</button>
+    <p id="listaNumeros">Números: Nenhum</p>
+    
+    <table>
+        <tr>
+            <th>Estatística</th>
+            <th>Valor</th>
+        </tr>
+        <tr>
+            <td>Média</td>
+            <td id="media"></td>
+        </tr>
+        <tr>
+            <td>Moda</td>
+            <td id="moda"></td>
+        </tr>
+        <tr>
+            <td>Mediana</td>
+            <td id="mediana"></td>
+        </tr>
+    </table>
+
+    <div class="explicacao">
+        <h3>Como os cálculos são feitos:</h3>
+        <p><strong>Média:</strong> A média é calculada somando todos os números e dividindo pelo total de elementos.</p>
+        <div class="formula">Média = (ΣX) / N</div>
+        <p><strong>Exemplo:</strong> Para os números 2, 4, 6, 8: </p>
+        <div class="formula">Média = (2 + 4 + 6 + 8) / 4 = 5</div>
+        
+        <p><strong>Moda:</strong> A moda é o número que mais aparece na lista. Se todos os números aparecem com a mesma frequência, considera-se que não há moda.</p>
+        <div class="formula">Moda = Número(s) mais frequente(s)</div>
+        <p><strong>Exemplo:</strong> Para os números 1, 2, 2, 3, 4, a moda é:</p>
+        <div class="formula">Moda = 2</div>
+        
+        <p><strong>Mediana:</strong> A mediana é o número central quando os valores estão ordenados. Se houver um número par de elementos, a mediana será a média dos dois valores centrais.</p>
+        <div class="formula">Mediana (N ímpar) = Valor central</div>
+        <div class="formula">Mediana (N par) = (X[n/2] + X[n/2+1]) / 2</div>
+        <p><strong>Exemplo:</strong> Para os números 3, 5, 7:</p>
+        <div class="formula">Mediana = 5</div>
+        <p><strong>Exemplo:</strong> Para os números 2, 4, 6, 8:</p>
+        <div class="formula">Mediana = (4 + 6) / 2 = 5</div>
+    </div>
+
+    <script>
+        let numeros = [];
+
+        function adicionarNumero() {
+            let numero = prompt("Digite um número:");
+            if (numero !== null && !isNaN(numero)) {
+                numeros.push(Number(numero));
+                document.getElementById("listaNumeros").innerText = "Números: " + numeros.join(", ");
+            } else {
+                alert("Por favor, insira um número válido.");
+            }
+        }
+
+        function calcular() {
+            if (numeros.length === 0) {
+                alert("Nenhum número foi adicionado.");
+                return;
+            }
+
+            // Calcular Média
+            let soma = numeros.reduce((acc, num) => acc + num, 0);
+            let media = soma / numeros.length;
+            document.getElementById("media").innerText = media.toFixed(2);
+
+            // Calcular Moda
+            let moda = calcularModa(numeros);
+            document.getElementById("moda").innerText = moda ? moda : "Não há moda";
+
+            // Calcular Mediana
+            let mediana = calcularMediana(numeros);
+            document.getElementById("mediana").innerText = mediana.toFixed(2);
+        }
+
+        function calcularModa(nums) {
+            let contagem = {};
+            nums.forEach(num => {
+                contagem[num] = (contagem[num] || 0) + 1;
+            });
+
+            let maxCount = 0;
+            let moda = [];
+            for (let num in contagem) {
+                if (contagem[num] > maxCount) {
+                    maxCount = contagem[num];
+                    moda = [num];
+                } else if (contagem[num] === maxCount) {
+                    moda.push(num);
+                }
+            }
+
+            return moda.length === nums.length ? null : moda.join(", ");
+        }
+
+        function calcularMediana(nums) {
+            nums.sort((a, b) => a - b);
+            let n = nums.length;
+            if (n % 2 === 0) {
+                return (nums[n / 2 - 1] + nums[n / 2]) / 2;
+            } else {
+                return nums[Math.floor(n / 2)];
+            }
+        }
+
+        function limparDados() {
+            numeros = [];
+            document.getElementById("listaNumeros").innerText = "Números: Nenhum";
+            document.getElementById("media").innerText = "";
+            document.getElementById("moda").innerText = "";
+            document.getElementById("mediana").innerText = "";
+        }
+    </script>
+</body>
+</html>
